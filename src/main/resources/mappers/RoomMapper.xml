@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Room.mapper">
+
+
+<insert id="rinsert">
+insert into Room (rname,rimg,rpersonnel,rsize,rfixtures,rprice)
+values(#{rname},#{rimg},#{rpersonnel},#{rsize},#{rfixtures},#{rprice})
+</insert>
+<select id="rread" resultType="util.RoomVO">
+select 
+rname , rimg , rpersonnel ,rsize , rfixtures , rprice
+from  Room where rnum=#{rnum};
+</select>
+
+<select id="selectRoom" resultType="util.RoomVO">
+	select r.rnum
+		, r.rname
+	    , r.rpersonnel
+	    , r.rprice
+	from Room r
+</select>
+
+<select id="selectReservationStatus" resultType="Map" parameterType="int">
+	select rv.room_num
+	    , rv.user_id
+	    , rv.start_date
+	    , rv.end_date
+	from reservation  rv
+    where MONTH(start_date) = #{value}
+    or MONTH(end_date) =  #{value}
+	<!-- 
+	select rname
+		, rprice
+	    , rv.user_id
+	    , rv.start_date
+	    , rv.end_date
+	from Room r 
+	left join reservation  rv 
+	on rv.room_num = r.rnum -->
+</select>
+<select id="selectReservationRoomread" resultType="Map">
+	select room_num
+	    , u.name
+	    , rv.id
+	    , rv.start_date
+	    , rv.end_date
+	    , rv.p_count
+	    , r.rname
+	    , r.rprice
+	from user u
+	 join reservation  rv 
+	on rv.user_id = u.id
+	join Room r 
+	on rv.room_num = r.rnum
+ where u.id=#{user_id}
+</select>
+<insert id="insertReservation" parameterType="util.RoomVO">
+	insert into reservation (
+		room_num,
+	    user_id,
+	    start_date,
+	    end_date,
+	    p_count
+	) values (
+		#{rnum},
+	    #{user_id},
+	    #{start_date},
+	    #{end_date},
+	    #{p_count}
+	);
+</insert>
+<update id="resrvationupdate" >
+update reservation set 
+room_num=#{rnum},
+ start_date=#{ start_date},
+end_date=#{end_date},
+p_count=#{p_count}
+where id=#{rid}
+</update>
+
+<select id="selectdetail" resultType="Map">
+select room_num
+	    , u.name
+	    , rv.id
+	    , rv.start_date
+	    , rv.end_date
+	    , rv.p_count
+	    , r.rname
+	    , r.rprice
+	from user u
+	 join reservation  rv 
+	on rv.user_id = u.id
+	join Room r 
+	on rv.room_num = r.rnum
+	where rv.id=#{rid}
+</select>
+<delete id="deleteReservation">
+delete from reservation  where id=#{rid}
+</delete>
+</mapper>

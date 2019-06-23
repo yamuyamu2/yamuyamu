@@ -1,0 +1,43 @@
+﻿
+/*----- rjAccordion -----*/
+    
+
+
+.accordion, .accordion * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.accordion {
+  overflow: hidden;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  background: #b5eab6;
+  color: #fff;
+  margin: 100px;
+  width: full;
+}
+
+.accordion-section-header {
+  width: 100%;
+  padding: 40px;
+  display: inline-block;
+  border-bottom: 1px solid #01f001;
+  background: #3ef326;
+  transition: all linear 0.15s;
+  font-size: 1.200em;
+  color: #fff;
+}
+
+.accordion-section-header.active, .accordion-section-header:hover {
+  background: #20ff5f;
+  text-decoration: none;
+}
+
+.accordion-section:last-child .accordion-section-header { border-bottom: none; }
+
+.accordion-section-content {
+  padding: 15px;
+  display: none;
+}

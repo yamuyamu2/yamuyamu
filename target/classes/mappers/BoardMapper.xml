@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board.mapper">
+<insert id="insert">
+insert into board (subject,content,writer)
+values(#{subject},#{content},#{writer})
+</insert>
+<select id="read" resultType="util.BoardVO">
+select bid,subject, content , writer , regdata , hit
+from  board where bid=#{bid}
+</select>
+<update id="update">
+update board set subject=#{subject}, content=#{content}
+where bid=#{bid}
+</update>
+<delete id="delete">
+delete  from  board where bid=#{bid}
+</delete>
+<select id="list" resultType="util.BoardVO">
+<![CDATA[
+select bid, subject, content, writer, regdata, hit
+from board
+where bid > 0
+order by bid desc, regdata desc]]>
+</select>
+<update id="hit">
+update board set hit=hit+1 where bid=#{bid} <!-- 조회수 증가 bid를 찾아 hit를 1추가해 -->
+</update>
+<select id="totaldata" resultType="int">
+SELECT COUNT(*) FROM board
+</select>
+<select id="listcriteria" resultType="util.BoardVO">
+<![CDATA[
+ select 
+ bid, subject, content, writer, regdata, hit
+ from 
+ board where
+ bid>0
+ order by bid desc,regdata desc
+ limit #{spage}, #{numPerPage}  
+ ]]>
+</select>
+</mapper>
